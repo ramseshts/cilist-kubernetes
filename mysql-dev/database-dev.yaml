@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql-dev
+  namespace: dev
+  labels: 
+    app: mysql-dev
+spec:
+  serviceName: mysql-stateful-service-dev
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mysql-dev
+  template:
+    metadata:
+      labels:
+        app: mysql-dev
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-stateful-volume-claim-dev
+        namespace: dev
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        volumeMode: Filesystem
+        resources:
+          requests:
+            storage: 1Gi
+  template:
+    metadata:
+      name: mysql-dev
+      namespace: dev
+      labels:
+        app: mysql-dev
+    spec:
+      containers:
+      - name: mysql-dev
+        image: rafly21/cilist-db:1.0
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: secret-db-dev
+              key: MYSQL_USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secret-db-dev
+              key: MYSQL_PASSWORD
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secret-db-dev
+              key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: db-configmap-dev
+              key: MYSQL_DATABASE
+        volumeMounts:
+        - name: mysql-stateful-volume-claim-dev
+          mountPath: /var/lib/mysql
+      # volumes:
+      # - name: mysql-data
+      #   volumeClaimTemplates:
+      #     name: mysql-stateful-volume-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-service-dev
+  namespace: dev
+spec:
+  selector:
+     app: mysql-dev
+  type: ClusterIP
+  ports:
+    - port: 3306
+      protocol: TCP
+    
+
+
+
+
+

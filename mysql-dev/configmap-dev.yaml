@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-configmap-dev
+  namespace: dev
+  labels:
+    app: mysql-dev
+data:
+  MYSQL_DATABASE: people

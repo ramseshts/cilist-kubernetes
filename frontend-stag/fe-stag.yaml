@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fe-cilist-stag
+  namespace: staging
+  labels:
+    app: fe-cilist-stag
+    name: fe-cilist-stag
+    keel.sh/policy: major
+    keel.sh/trigger: poll  
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fe-cilist-stag
+  template:
+    metadata:
+      labels:
+        app: fe-cilist-stag
+    spec:
+      containers:
+      - name: fe-cilist-stag
+        image: rafly21/fe-cilistproject:0.0.3-staging	
+        ports:
+        - containerPort: 3000
+        env:
+        - name: REACT_APP_BACKEND_URL
+          valueFrom:
+            configMapKeyRef:
+              name: fe-configmap-stag
+              key: REACT_APP_BACKEND_URL       
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-fe-cilist-stag
+  namespace: staging
+spec:
+  selector:
+    app: fe-cilist-stag
+  ports:
+  - port: 80
+    targetPort: 3000
+    protocol: TCP
+  type: ClusterIP
+    

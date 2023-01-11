@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-fe
+  namespace: staging
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: apps-staging.cilist.my.id
+    http:
+      paths:
+        - path:
+          pathType:
+          backend:
+            serviceName: svc-fe-cilist-stag
+            servicePort: 80

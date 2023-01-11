@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-be-prod
+  namespace: production
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: api.cilist.my.id
+    http:
+      paths:
+        - path:
+          pathType:
+          backend:
+            serviceName: svc-be-cilist-prod
+            servicePort: 80

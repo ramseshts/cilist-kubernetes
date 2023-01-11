@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql-stag
+  namespace: staging
+  labels: 
+    app: mysql-stag
+spec:
+  serviceName: mysql-stateful-service-stag
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mysql-stag
+  template:
+    metadata:
+      labels:
+        app: mysql-stag
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-stateful-volume-claim-stag
+        namespace: staging
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        volumeMode: Filesystem
+        resources:
+          requests:
+            storage: 1Gi
+  template:
+    metadata:
+      name: mysql-stag
+      namespace: staging
+      labels:
+        app: mysql-stag
+    spec:
+      containers:
+      - name: mysql-stag
+        image: rafly21/cilist-db:1.0
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: secret-db-stag
+              key: MYSQL_USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secret-db-stag
+              key: MYSQL_PASSWORD
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secret-db-stag
+              key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: db-configmap-stag
+              key: MYSQL_DATABASE
+        volumeMounts:
+        - name: mysql-stateful-volume-claim-stag
+          mountPath: /var/lib/mysql
+      # volumes:
+      # - name: mysql-data
+      #   volumeClaimTemplates:
+      #     name: mysql-stateful-volume-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-service-stag
+  namespace: staging
+spec:
+  selector:
+     app: mysql-stag
+  type: ClusterIP
+  ports:
+    - port: 3306
+      protocol: TCP
+    
+
+
+
+
+

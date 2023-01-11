@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fe-cilist-prod
+  namespace: production
+  labels:
+    app: fe-cilist-prod
+    name: fe-cilist-prod
+    keel.sh/policy: major  
+    keel.sh/trigger: poll  
+    keel.sh/approvals: "1" 
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fe-cilist-prod
+  template:
+    metadata:
+      labels:
+        app: fe-cilist-prod
+    spec:
+      containers:
+      - name: fe-cilist-prod
+        image: rafly21/fe-cilistproject:0.0.6-master	
+        ports:
+        - containerPort: 3000
+        env:
+        - name: REACT_APP_BACKEND_URL
+          valueFrom:
+            configMapKeyRef:
+              name: fe-configmap-prod
+              key: REACT_APP_BACKEND_URL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-fe-cilist-prod
+  namespace: production
+spec:
+  selector:
+    app: fe-cilist-prod
+  ports:
+  - port: 80
+    targetPort: 3000
+    protocol: TCP
+  type: ClusterIP
+    
