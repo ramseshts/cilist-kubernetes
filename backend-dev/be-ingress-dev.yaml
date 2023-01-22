@@ -1,18 +1,18 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: ingress-be-stag
-  namespace: staging
+  name: ingress-be-dev
+  namespace: development
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: api-staging.cilist.my.id
+  - host: api-dev.ramsesd19digitalcilsy.com
     http:
       paths:
         - path:
           pathType:
           backend:
-            serviceName: svc-be-cilist-stag
+            serviceName: svc-be-cilist-dev
             servicePort: 80

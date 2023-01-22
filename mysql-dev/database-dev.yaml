@@ -35,7 +35,7 @@ spec:
     spec:
       containers:
       - name: mysql-dev
-        image: rafly21/cilist-db:1.0
+        image: ramses01/cilist-database:latest
         ports:
         - containerPort: 3306
         env:

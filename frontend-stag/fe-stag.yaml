@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: fe-cilist-stag
-        image: rafly21/fe-cilistproject:0.0.3-staging	
+        image: ramses01/cilist-frontend:0.0.1-staging	
         ports:
         - containerPort: 3000
         env:

@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: fe-cilist-prod
-        image: rafly21/fe-cilistproject:0.0.6-master	
+        image: ramses01/cilist-frontend:0.0.1-master
         ports:
         - containerPort: 3000
         env:

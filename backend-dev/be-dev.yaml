@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: be-cilist-dev
-        image: rafly21/be-cilistdev:test
+        image: ramses01/cilist-backend-dev:latest
         ports:
         - containerPort: 5000
         resources:
