@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mysql-dev
-  namespace: development
+  name: mysql-prod
+  namespace: production
   labels: 
-    app: mysql-dev
+    app: mysql-prod
 spec:
-  serviceName: mysql-stateful-service-dev
+  serviceName: mysql-stateful-service-prod
   replicas: 3
   selector:
     matchLabels:
-      app: mysql-dev
+      app: mysql-prod
   template:
     metadata:
       labels:
-        app: mysql-dev
+        app: mysql-prod
   volumeClaimTemplates:
     - metadata:
-        name: mysql-stateful-volume-claim-dev
-        namespace: development
+        name: mysql-stateful-volume-claim-prod
+        namespace: production
       spec:
         accessModes:
           - ReadWriteOnce
@@ -28,13 +28,13 @@ spec:
             storage: 1Gi
   template:
     metadata:
-      name: mysql-dev
-      namespace: development
+      name: mysql-prod
+      namespace: production
       labels:
-        app: mysql-dev
+        app: mysql-prod
     spec:
       containers:
-      - name: mysql-dev
+      - name: mysql-prod
         image: ramses01/cilist-database:latest
         ports:
         - containerPort: 3306
@@ -42,25 +42,25 @@ spec:
         - name: MYSQL_USER
           valueFrom:
             secretKeyRef:
-              name: secret-db-dev
+              name: secret-db-prod
               key: MYSQL_USER
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: secret-db-dev
+              name: secret-db-prod
               key: MYSQL_PASSWORD
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: secret-db-dev
+              name: secret-db-prod
               key: MYSQL_ROOT_PASSWORD
         - name: MYSQL_DATABASE
           valueFrom:
             configMapKeyRef:
-              name: db-configmap-dev
+              name: db-configmap-prod
               key: MYSQL_DATABASE
         volumeMounts:
-        - name: mysql-stateful-volume-claim-dev
+        - name: mysql-stateful-volume-claim-prod
           mountPath: /var/lib/mysql
       # volumes:
       # - name: mysql-data
@@ -70,11 +70,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: db-service-dev
-  namespace: development
+  name: db-service-prod
+  namespace: production
 spec:
   selector:
-     app: mysql-dev
+     app: mysql-prod
   type: ClusterIP
   ports:
     - port: 3306

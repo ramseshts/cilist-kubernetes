@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: db-configmap-dev
-  namespace: development
+  name: db-configmap-prod
+  namespace: proding
   labels:
-    app: mysql-dev
+    app: mysql-prod
 data:
   MYSQL_DATABASE: people

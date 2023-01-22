@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-fe
+  namespace: development
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: apps-dev.ramsesd19digitalcilsy.com
+    http:
+      paths:
+        - path:
+          pathType:
+          backend:
+            serviceName: svc-fe-cilist-dev
+            servicePort: 80
