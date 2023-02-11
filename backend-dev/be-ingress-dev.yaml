@@ -2,13 +2,13 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: ingress-be-dev
-  namespace: development
+  namespace: development 
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: api-dev.ramsesd19digitalcilsy.com
+  - host: api-dev.ccilist.my.id
     http:
       paths:
         - path:

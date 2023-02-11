@@ -8,7 +8,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: apps-dev.ramsesd19digitalcilsy.com
+  - host: apps-dev.ccilist.my.id
     http:
       paths:
         - path:

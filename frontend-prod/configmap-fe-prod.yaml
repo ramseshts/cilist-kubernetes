@@ -6,4 +6,4 @@ metadata:
   labels:
     app: fe-cilist-prod
 data:
-  REACT_APP_BACKEND_URL: https://api.ramsesd19digitalcilsy.com
+  REACT_APP_BACKEND_URL: http://api.ccilist.my.id

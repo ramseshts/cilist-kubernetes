@@ -6,4 +6,4 @@ metadata:
   labels:
     app: fe-cilist-stag
 data:
-  REACT_APP_BACKEND_URL: https://api-staging.ramsesd19digitalcilsy.com
+  REACT_APP_BACKEND_URL: https://api-staging.ccilist.my.id
